@@ -21,7 +21,7 @@
         # TODO READER: you should do the same for all other plugin formats, this is left as an
         #              exercice for the reader ;-)
         lv2_path = (lib.makeSearchPath "lib/lv2" myPlugins);
-        wrapMyProgram = programToWrap: pkgs.runCommand
+        wrapMyProgram = { programToWrap, filesToWrap ? "*" }: pkgs.runCommand
           # name of the program, like ardour-with-my-plugins-6.9
           (programToWrap.pname + "-with-my-plugins-" + programToWrap.version)
           {
@@ -34,7 +34,7 @@
           }
           ''
             mkdir -p $out/bin
-            for file in ${programToWrap}/bin/*;
+            for file in ${programToWrap}/bin/${filesToWrap};
             do
               filename="$(basename -- $file)"
               # TODO READER: should do the same for all plugins formats (you can have multiple prefix arguments)
@@ -46,9 +46,19 @@
           '';
       in
       rec {
+        # Executed by `nix build .#<name>`
         packages = flake-utils.lib.flattenTree {
-          ardour = wrapMyProgram pkgs.ardour;
+          # This creates an entry self.packages.${system}.ardour with the wrapped program.
+          ardour = wrapMyProgram { programToWrap = pkgs.ardour; };
         };
+        # Executed by `nix run .#<name>`
+        apps = {
+          ardour = {
+            type = "app";
+            program = "${self.packages.${system}.ardour}/bin/ardour6";
+          };
+        };
+        # Used by `nix develop` (not really needed if you use nix run)
         devShell = pkgs.mkShell {
           buildInputs = with pkgs; [
             self.packages.${system}.ardour
