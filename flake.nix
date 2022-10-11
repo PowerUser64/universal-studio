@@ -12,20 +12,20 @@
         pkgs = import nixpkgs { inherit system; };
         lib = pkgs.lib;
         # TODO: figure out how to use this
-        # Applications to install
-        # myApplications = with pkgs; [
-        #
-        #   ######################
-        #   ###      DAW       ###
-        #   ######################
-        #
-        #   ardour
-        #   audacity
-        #   bespokesynth
-        #   carla
-        #   zrythm
-        #
-        # ];
+        /* # Applications to install
+        myApplications = with pkgs; [
+
+          ######################
+          ###      DAW       ###
+          ######################
+
+          ardour
+          audacity
+          bespokesynth
+          carla
+          zrythm
+
+        ]; */
         # Plugins to load (lv2/…)
         myPlugins = with pkgs; [
 
@@ -57,10 +57,10 @@
           surge-XT
           x42-gmsynth
 
-          # Specialized synths
+          # Specialized
           sorcer
 
-          # Drum synths
+          # Drums
           ChowKick
           geonkick
           helm
