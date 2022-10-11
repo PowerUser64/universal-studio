@@ -20,7 +20,15 @@ ground for Linux audio production.
 nix --extra-experimental-features flakes --extra-experimental-features nix-command run 'https://codeberg.org/PowerUser/universal-studio#ardour'
 ```
 
-You should now see Ardour and have some audio plugins ready to use.
+You should now see Ardour and have some audio plugins ready to use. To run
+other packages included in this suite, replace `ardour` at the end of the
+command with any of the other apps listed in the [`apps`
+list](https://codeberg.org/PowerUser/universal-studio/src/branch/main/flake.nix#L146),
+within `flake.nix`.
+
+> Note: to shorten this command, you can follow the instructions
+[here](https://nixos.wiki/wiki/Flakes#Enable_flakes), which will allow you to
+ommit the two `--extra-experimental-features` flags.
 
 ## Credits
 
