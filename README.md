@@ -25,7 +25,7 @@ You should now see Ardour and have some audio plugins ready to use.
 
 NixOS forum - Huge thank you to
 [@tobiasBora](https://discourse.nixos.org/u/tobiasBora) on the NixOS forum for
-helping get this project started in nix. You can read the forum post
+helping get this project started in nix. You can read our forum post
 [here](https://discourse.nixos.org/t/22191).
 
 [pacew/unfatarians-studio](https://codeberg.org/pacew/unfatarians-studio) -
