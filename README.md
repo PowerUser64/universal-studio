@@ -7,8 +7,9 @@ Universal Studio is an audio production environment for Linux, built to enable
 collaborative audio production. Included in this is a selection of DAW's,
 plugins, and collaboration tools. Although this project was initially built to
 enable [unfa](https://unfa.xyz)'s Linux audio community to more easily tackle
-challenges like [Server vs Server](https://www.servervsserver.com/), it is
-suitable as a starting ground for Linux audio production.
+collaborative challenges like [Server vs
+Server](https://www.servervsserver.com/), it is suitable as an easy starting
+ground for Linux audio production.
 
 ## Usage
 
