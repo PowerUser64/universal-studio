@@ -15,9 +15,9 @@
         /* # Applications to install
         myApplications = with pkgs; [
 
-          ######################
-          ###      DAW       ###
-          ######################
+          #######################
+          ###       DAW       ###
+          #######################
 
           ardour
           audacity
@@ -25,13 +25,19 @@
           carla
           zrythm
 
+          #######################
+          ###  Miscellaneous  ###
+          #######################
+
+          syncthing
+
         ]; */
         # Plugins to load (lv2/…)
         myPlugins = with pkgs; [
 
-          ######################
-          ###  Plugin packs  ###
-          ######################
+          #######################
+          ###  Plugin packs   ###
+          #######################
 
           # dpf-plugins  # not in repos yet
           # wolf-spectrum  # not in repos yet
@@ -47,9 +53,9 @@
           x42-plugins
           zam-plugins
 
-          ######################
-          ###  Instruments   ###
-          ######################
+          #######################
+          ###  Instruments    ###
+          #######################
 
           # General-purpose
           cardinal
@@ -66,9 +72,9 @@
           helm
           x42-avldrums
 
-          ######################
-          ###    Effects     ###
-          ######################
+          #######################
+          ###    Effects      ###
+          #######################
 
           # Reverb
           aether-lv2
