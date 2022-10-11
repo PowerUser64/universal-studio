@@ -1,0 +1,38 @@
+# Universal Studio
+
+**Project status:** *alpha* - feel free to test this project. It works on my
+machine, let me know if it works on yours.
+
+Universal Studio is an audio production environment for Linux, built to enable
+collaborative audio production. Included in this is a selection of DAW's,
+plugins, and collaboration tools. Although this project was initially built to
+enable [unfa](https://unfa.xyz)'s Linux audio community to more easily tackle
+challenges like [Server vs Server](https://www.servervsserver.com/), it is
+suitable as a starting ground for Linux audio production.
+
+## Usage
+
+1. [Install Nix](https://nixos.wiki/wiki/Nix_Installation_Guide)
+2. Run this: <!-- TODO: figure out how to simplify this to `nix run 'codeberg:universal-studio`-->
+
+```bash
+git clone https://codeberg.org/PowerUser/universal-studio
+cd universal-studio
+nix --extra-experimental-features flakes --extra-experimental-features nix-command run '.#ardour'
+```
+
+You should now see Ardour and have some audio plugins ready to use.
+
+## Credits
+
+NixOS forum - Huge thank you to
+[@tobiasBora](https://discourse.nixos.org/u/tobiasBora) on the NixOS forum for
+helping get this project started in nix. You can read the forum post
+[here](https://discourse.nixos.org/t/22191).
+
+[pacew/unfatarians-studio](https://codeberg.org/pacew/unfatarians-studio) -
+This is the beginning of this project, as a docker image. Developing it as a
+docker image proved to have a number of unforeseen challenges, and in the
+process of researching alternatives, I discovered nix. Since it was such a big
+swing in how the project worked, I decided it would be best to put it in a new
+repository.
