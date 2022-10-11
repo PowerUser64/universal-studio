@@ -92,8 +92,6 @@
         # this is just more general to loop over all plugins as makeSearchPath adds lib/lv2 to all
         # outputs and concat them with a colon in between as explained in:
         # https://nixos.org/manual/nixpkgs/stable/#function-library-lib.strings.makeSearchPath
-        # TODO READER: you should do the same for all other plugin formats, this is left as an
-        #              exercice for the reader ;-)
         lv2_path    = (lib.makeSearchPath "lib/lv2"    myPlugins);
         clap_path   = (lib.makeSearchPath "lib/clap"   myPlugins);
         vst3_path   = (lib.makeSearchPath "lib/vst3"   myPlugins);
@@ -117,9 +115,6 @@
             for file in ${programToWrap}/bin/${filesToWrap};
             do
               filename="$(basename -- $file)"
-              # TODO READER: should do the same for all plugins formats (you can have multiple prefix arguments)
-              # to see the content of the wrapper to debug, use less as it is in binary format (for compatibility
-              # with MacOs)
               makeWrapper "$file" "$out/bin/$filename"  \
                 --prefix LV2_PATH    : "${lv2_path}"    \
                 --prefix CLAP_PATH   : "${clap_path}"   \
