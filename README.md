@@ -70,4 +70,5 @@ This is the beginning of this project, as a docker image. Developing it as a
 docker image proved to have a number of unforeseen challenges, and in the
 process of researching alternatives, I discovered nix. Since it was such a big
 swing in how the project worked, I decided it would be best to put it in a new
-repository.
+repository. Huge props to @pacew and @JohnTheBard for their hard work on the
+project.
