@@ -24,8 +24,7 @@ chmod +x universal-launcher
 
 Now, you can run `./universal-launcher ardour` to launch Ardour; or replace
 `ardour` with another application listed in `flake.nix` to launch *it* instead.
-Note that the script might take a little longer than usual to run programs the
-first time you launch them.
+Note that the script will take longer to run the first time you use it.
 
 ## FAQ
 
