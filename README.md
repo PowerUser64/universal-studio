@@ -17,7 +17,7 @@ ground for Linux audio production.
 2. Run this: <!-- TODO: figure out how to simplify this to `nix run 'codeberg:universal-studio`-->
 
 ```bash
-nix --extra-experimental-features flakes --extra-experimental-features nix-command run 'https://codeberg.org/PowerUser/universal-studio#ardour'
+nix --extra-experimental-features flakes --extra-experimental-features nix-command run 'github:PowerUser64/universal-studio#ardour'
 ```
 
 You should now see Ardour and have some audio plugins ready to use. To run
