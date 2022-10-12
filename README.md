@@ -1,7 +1,7 @@
 # Universal Studio
 
-**Project status:** *beta* - feel free to test this project. It works on my
-machine, let me know if it works on yours.
+**Project status:** *beta* - feel free to test this project. "It works on my
+machine, let me know if it doesn't work on yours."
 
 Universal Studio is an audio production environment for Linux, built to enable
 collaborative audio production across distributions and environments. Included
@@ -42,19 +42,20 @@ invasive to get running.
 ### How do I completely remove this from my system?
 
 How you remove this depends on whether you were using `nix-portable` or `nix`.
-To find out, simply type `which nix` into your terminal. If this gives you an
-error, you are not using `nix`.
+Follow the instructions below for whether or not you have nix. If you don't
+know if you are using nix, you probably aren't, but if running `ls /nix` in
+your terminal gives you an error, you aren't using nix.
 
-#### I do not have `nix` installed
+#### I am not using `nix`
 
 1. Remove the `~/.nix-portable` directory
 2. Remove the `nix-portable` binary and the `universal-launcher` script from
    where you are storing them.
 
-#### I have `nix` installed
+#### I am using `nix`
 
-If you already have `nix`, you should look into the `nix-collect-garbage`
-command, which you can learn about in the [nix
+If you are using `nix`, you should look into the `nix-collect-garbage` command,
+which you can learn about in the [nix
 manual](https://nixos.org/manual/nix/stable/command-ref/nix-collect-garbage.html).
 
 ## Credits
