@@ -23,7 +23,7 @@ chmod +x universal-launcher
 ```
 
 Now, you can run `./universal-launcher ardour` to launch Ardour; or replace
-`ardour` with another application listed in `flake.nix` to launch it instead.
+`ardour` with another application listed in `flake.nix` to launch *it* instead.
 Note that the script might take a little longer than usual to run programs the
 first time you launch them.
 
@@ -34,18 +34,18 @@ first time you launch them.
 Universal launcher works in one of two ways, depending on whether you have the
 `nix` command already. If you have the command, it runs the project as a flake,
 using the system version of `nix`. If you don't have the `nix` command, it
-downloads a static `nix` binary from a project called
-[`nix-portable`](https://github.com/DavHau/nix-portable), which it then uses to
-run the project as a nix flake, just as it would if you already had the `nix`
-command. The difference is it doesn't require privileges to use and it isn't
+downloads a static `nix` binary from
+[`nix-portable`](https://github.com/DavHau/nix-portable), which is then used to
+run the project in the same way it would if `nix` was already installed. The
+difference is `nix-portable` doesn't require privileges to use and isn't as
 invasive to get running.
 
 ### How do I completely remove this from my system?
 
 How you remove this depends on whether you were using `nix-portable` or `nix`.
 Follow the instructions below for whether or not you have nix. If you don't
-know if you are using nix, you probably aren't, but if running `ls /nix` in
-your terminal gives you an error, you aren't using nix.
+know whether you are using nix, you probably aren't, but if running `ls /nix`
+in your terminal gives you an error, you aren't using nix.
 
 #### I am not using `nix`
 
