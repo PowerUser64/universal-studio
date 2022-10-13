@@ -29,6 +29,50 @@ listed in `flake.nix` to launch a different one instead. Please note that
 everything will need to be download the first time you use it, so the first run
 will take longer than usual.
 
+## Links
+
+* [Codeberg (Main repository)](https://codeberg.org/PowerUser/universal-studio)
+* [GitHub (Mirror)](https://github.com/PowerUser64/universal-studio)
+* [Liberapay - Support the project](https://liberapay.com/PowerUser/)
+
+## Contributing
+
+Feel free to do any of the things in the [TODO](#TODO) section yourself and
+submit a pull request! If you want a package, first search for it on
+[search.nixos.org](https://search.nixos.org/packages?channel=unstable). If you
+don't find it, please make a packaging request at the [nix package
+repository](https://github.com/NixOS/nixpkgs/). If you do find it, please open
+an issue to request the package or add it yourself and submit a pull request.
+
+
+## TODO
+
+High priority:
+
+* [ ] Ensure all nix packages we use are up-to-date
+* [ ] Update nix packages that need it
+  * [ ] distrho (very important)
+  * [ ] zrythm
+* [ ] Add wanted and missing packages to the nix package repository
+  * Plugins
+    * [ ] Wolf Shaper
+    * [ ] DPF Plugins
+  * Programs
+    * [ ] [RaySession](https://github.com/NixOS/nixpkgs/issues/194022)
+    * [ ] [Patchance](https://github.com/NixOS/nixpkgs/issues/194023)
+* [ ] Beautify readme
+  * [ ] Banner
+  * [ ] Badges
+  * [ ] Blazingly fast
+  * Other trendy things
+
+Low priority:
+
+* [ ] Add options to `universal-launcher`
+  * [ ] `--list` to show what packages can be launched
+* [ ] Make an option in `universal-launcher` to start
+  [Syncthing](https://syncthing.net/)
+
 ## FAQ
 
 ### What does `universal-launcher` do?
@@ -75,5 +119,8 @@ This is the beginning of this project, as a docker image. Developing it as a
 docker image proved to have a number of unforeseen challenges, and in the
 process of researching alternatives, I discovered nix. Since it was such a big
 swing in how the project worked, I decided it would be best to put it in a new
-repository. Huge props to @pacew and @JohnTheBard for their hard work on the
-project.
+repository. Huge props to @pacew and @JohnTheBard for all their hard work on
+the project.
+
+<!-- vim: sw=2 ts=2
+-->
