@@ -52,13 +52,13 @@ if ! command -v curl > /dev/null; then
    err 'Error: `curl` does not exist or could not be found in $PATH. Please install curl and try again.' >&2
 fi
 
-# Find nix-portable if we already have it
-if command -v nix > /dev/null; then
+# Find nix-portable if we already have it or select the system version of nix
+if command -v nix > /dev/null && ! "${FORCE_NIX_PORTABLE:-false}"; then
    dbg '`nix` command detected, using it'
    NIX='nix --extra-experimental-features flakes --extra-experimental-features nix-command'
 elif command -v nix-portable > /dev/null; then
    NIX="nix-portable nix"
-elif ! test -x "$NIX_LOCATION"; then
+elif ! test -x "$NIX_LOCATION"; then  # Check if nix-portable already exists and is executable
    # Get nix-portable from github releases
    msg '`nix-portable` not found, downloading from github releases...'
    # quoting the arguments here because zsh doesn't like the pound sign
@@ -70,5 +70,10 @@ else
    NIX="$NIX_LOCATION nix"
 fi
 
-dbg "Running nix from command $NIX"
+if "${FORCE_NIX_PORTABLE:-false}"; then
+   dbg "Forcing nix portable"
+fi
+
+dbg "nix command is $NIX"
+msg "Running $PACKAGE with nix…"
 eval "$NIX run '$FLAKE#$PACKAGE'"
