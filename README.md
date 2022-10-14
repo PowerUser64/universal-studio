@@ -57,6 +57,7 @@ High priority:
   * Plugins
     * [ ] Wolf Shaper
     * [ ] DPF Plugins
+    * [ ] OneTrick Simian
   * Programs
     * [ ] [RaySession](https://github.com/NixOS/nixpkgs/issues/194022)
     * [ ] [Patchance](https://github.com/NixOS/nixpkgs/issues/194023)
