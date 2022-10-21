@@ -15,13 +15,13 @@ to start for anyone who is looking to use Linux for audio production.
 
 ## Usage
 
-This project contains a script called `universal-launcher` that can be used to
-launch any program it provides. To get `universal-launcher`, execute this:
+This project contains a script called `universal-studio` that can be used to
+launch any program it provides. To get `universal-studio`, execute this:
 
 ```bash
-curl -sSLo universal-launcher https://codeberg.org/PowerUser/universal-studio/raw/branch/main/universal-launcher.sh
-chmod +x universal-launcher
-./universal-launcher ardour
+curl -sSLo universal-studio https://codeberg.org/PowerUser/universal-studio/raw/branch/main/universal-studio.sh
+chmod +x universal-studio
+./universal-studio ardour
 ```
 
 After a moment, Ardour should launch. Replace `ardour` with another application
@@ -48,9 +48,8 @@ an issue to request the package or add it yourself and submit a pull request.
 <!-- TODO: Move TODO list below the FAQ -->
 ## TODO
 
-<!-- Hidden:
-* [ ] Rename universal-launcher to universal-studio to avoid confusion with
-  packaging and such
+<!-- Hidden TODO list:
+Empty!
 -->
 
 High priority:
@@ -74,14 +73,14 @@ High priority:
 
 Low priority:
 
-* [ ] Add options to `universal-launcher`
+* [ ] Add options to `universal-studio`
   * [ ] `--list` to show what packages can be launched
-* [ ] Make an option in `universal-launcher` to start
+* [ ] Make an option in `universal-studio` to start
   [Syncthing](https://syncthing.net/)
 
 ## FAQ
 <!-- TODO: add emojis to the questions so they stand out -->
-### What does `universal-launcher` do?
+### What does `universal-studio` do?
 
 Universal launcher works in one of two ways, depending on whether you have the
 `nix` command already. If you have the `nix` command, it runs the project as a
@@ -104,7 +103,7 @@ in your terminal gives you an error, you aren't using nix.
 #### I am not using `nix`
 
 1. Remove the `~/.nix-portable` directory
-2. Remove the `nix-portable` binary and the `universal-launcher` script from
+2. Remove the `nix-portable` binary and the `universal-studio` script from
    where you are storing them.
 
 #### I am using `nix`
