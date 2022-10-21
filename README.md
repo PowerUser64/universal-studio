@@ -33,7 +33,7 @@ will take longer than usual.
 
 * [Codeberg (Main repository)](https://codeberg.org/PowerUser/universal-studio)
 * [GitHub (Mirror)](https://github.com/PowerUser64/universal-studio)
-* [Liberapay - Support the project](https://liberapay.com/PowerUser/)
+* Support the project - [Liberapay](https://liberapay.com/PowerUser/)
 
 ## Contributing
 
@@ -45,13 +45,18 @@ repository](https://github.com/NixOS/nixpkgs/). If you do find it, please open
 an issue to request the package or add it yourself and submit a pull request.
 
 
+<!-- TODO: Move TODO list below the FAQ -->
 ## TODO
+
+<!-- Hidden:
+* [ ] Rename universal-launcher to universal-studio to avoid confusion with
+  packaging and such
+-->
 
 High priority:
 
 * [ ] Ensure all nix packages we use are up-to-date
 * [ ] Update nix packages that need it
-  * [ ] distrho (very important)
   * [ ] zrythm
 * [ ] Add wanted and missing packages to the nix package repository
   * Plugins
@@ -75,13 +80,13 @@ Low priority:
   [Syncthing](https://syncthing.net/)
 
 ## FAQ
-
+<!-- TODO: add emojis to the questions so they stand out -->
 ### What does `universal-launcher` do?
 
 Universal launcher works in one of two ways, depending on whether you have the
-`nix` command already. If you have the command, it runs the project as a flake,
-using the system version of `nix`. If you don't have the `nix` command, it
-downloads a static `nix` binary from
+`nix` command already. If you have the `nix` command, it runs the project as a
+flake, using the system version of `nix`. If you don't have the `nix` command,
+it downloads a static `nix` binary from
 [`nix-portable`](https://github.com/DavHau/nix-portable) and then runs the
 project in the same way it would if `nix` was already installed. The difference
 is `nix-portable` doesn't require privileges to use and isn't as invasive to
