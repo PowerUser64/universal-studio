@@ -35,6 +35,38 @@ will take longer than usual.
 * [GitHub (Mirror)](https://github.com/PowerUser64/universal-studio)
 * Support the project - [Liberapay](https://liberapay.com/PowerUser/)
 
+<!--
+## Versioning
+IDEA ONE:
+This project follows [semantic versioning](https://semver.org/), but it's worth
+explaining for what reason different numbers will go up, so here's an overview.
+
+Take for example this version code: `v0.1.2`. This is what the numbers mean:
+
+- The `v` simply indicates you are looking at a version code.
+- The `0` indicates major, potentially breaking changes since the last
+  version.\
+  Example:
+  - Updating to the latest version of the distributed packages.
+- The `1` indicates additions to the project that shouldn't break existing
+  functionality.\
+  Examples:
+  - A command-line option is added to `universal-studio.sh`.
+  - A package is added without updating existing ones.
+- The `2` indicates small changes.\
+  Example:
+  - A bug fix to `universal-studio.sh`.
+  - A broken package is updated.
+
+IDEA TWO:
+Have two version numbers, one for universal-studio and the other for the
+software packages.
+
+IDEA THREE:
+Use a date to indicate versions. - Simple but doesn't communicate a whole lot
+of useful information.
+-->
+
 ## Contributing
 
 Feel free to do any of the things in the [TODO](#TODO) section yourself and
@@ -43,7 +75,6 @@ submit a pull request! If you want a package, first search for it on
 don't find it, please make a packaging request at the [nix package
 repository](https://github.com/NixOS/nixpkgs/). If you do find it, please open
 an issue to request the package or add it yourself and submit a pull request.
-
 
 <!-- TODO: Move TODO list below the FAQ -->
 ## TODO
