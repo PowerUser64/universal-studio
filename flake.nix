@@ -12,8 +12,8 @@
         pkgs = import nixpkgs { inherit system; };
         lib = pkgs.lib;
         # TODO: figure out how to use this
-        /* # Applications to install
-        myApplications = with pkgs; [
+        # Applications to make available through `nix run` and such
+        Apps = with pkgs; [
 
           #######################
           ###       DAW       ###
@@ -31,9 +31,9 @@
 
           syncthing
 
-        ]; */
+        ];
         # Plugins to load (lv2/…)
-        myPlugins = with pkgs; [
+        Plugins = with pkgs; [
 
           #######################
           ###  Plugin packs   ###
@@ -98,16 +98,16 @@
         # this is just more general to loop over all plugins as makeSearchPath adds lib/lv2 to all
         # outputs and concat them with a colon in between as explained in:
         # https://nixos.org/manual/nixpkgs/stable/#function-library-lib.strings.makeSearchPath
-        lv2_path    = (lib.makeSearchPath "lib/lv2"    myPlugins);
-        clap_path   = (lib.makeSearchPath "lib/clap"   myPlugins);
-        vst3_path   = (lib.makeSearchPath "lib/vst3"   myPlugins);
-        vst_path    = (lib.makeSearchPath "lib/vst"    myPlugins);
-        lxvst_path  = (lib.makeSearchPath "lib/lxvst"  myPlugins);
-        ladspa_path = (lib.makeSearchPath "lib/ladspa" myPlugins);
-        dssi_path   = (lib.makeSearchPath "lib/dssi"   myPlugins);
-        wrapMyProgram = { programToWrap, filesToWrap ? "*" }: pkgs.runCommand
-          # name of the program, like ardour-with-my-plugins-6.9
-          (programToWrap.pname + "-with-my-plugins-" + programToWrap.version)
+        lv2_path    = (lib.makeSearchPath "lib/lv2"    Plugins);
+        clap_path   = (lib.makeSearchPath "lib/clap"   Plugins);
+        vst3_path   = (lib.makeSearchPath "lib/vst3"   Plugins);
+        vst_path    = (lib.makeSearchPath "lib/vst"    Plugins);
+        lxvst_path  = (lib.makeSearchPath "lib/lxvst"  Plugins);
+        ladspa_path = (lib.makeSearchPath "lib/ladspa" Plugins);
+        dssi_path   = (lib.makeSearchPath "lib/dssi"   Plugins);
+        wrapProgram = { programToWrap, filesToWrap ? "*" }: pkgs.runCommand
+          # name of the program, like ardour-with-plugins-6.9
+          (programToWrap.pname + "-with-plugins-" + programToWrap.version)
           {
             nativeBuildInputs = with pkgs; [
               makeBinaryWrapper
@@ -136,11 +136,11 @@
         # Executed by `nix build .#<name>`
         packages = flake-utils.lib.flattenTree {
           # This creates an entry self.packages.${system}.ardour with the wrapped program.
-          ardour       = wrapMyProgram { programToWrap = pkgs.ardour      ; };
-          audacity     = wrapMyProgram { programToWrap = pkgs.audacity    ; };
-          bespokesynth = wrapMyProgram { programToWrap = pkgs.bespokesynth; };
-          carla        = wrapMyProgram { programToWrap = pkgs.carla       ; };
-          zrythm       = wrapMyProgram { programToWrap = pkgs.zrythm      ; };
+          ardour       = wrapProgram { programToWrap = pkgs.ardour      ; };
+          audacity     = wrapProgram { programToWrap = pkgs.audacity    ; };
+          bespokesynth = wrapProgram { programToWrap = pkgs.bespokesynth; };
+          carla        = wrapProgram { programToWrap = pkgs.carla       ; };
+          zrythm       = wrapProgram { programToWrap = pkgs.zrythm      ; };
         };
         # Executed by `nix run .#<name>`
         apps = {
