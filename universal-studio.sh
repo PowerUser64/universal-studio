@@ -46,15 +46,28 @@ application_list_name=myApplications
 # Initialize FORCE_NIX_PORTABLE to false if it's unset
 FORCE_NIX_PORTABLE="${FORCE_NIX_PORTABLE:-false}"
 
+# Helper functions for printing information
+msg() { echo "$@"; }
+err() { msg  "$@" >&2; }
+dbg() { ("${DEBUG:-false}" && err "$@") || true; }
+
 usage() {
-   msg "$program_name v$program_ver"
    msg "Usage:"
-   msg " To launch one or more applications: $program_name app_1 app_2 app_3 [...]"
-   msg " Other functionality: $program_name [option]"
+   msg " Launch applications: $program_name ${Grn}app_1${Nc} ${Grn}app_2${Nc} ${Grn}app_3${Nc} ${Grn}[...]${Nc}"
+   msg " Other functionality: $program_name ${Grn}[option]${Nc}"
    msg "  The options are:"
-   msg "   -l, --list             List all applications available to launch"
-   msg "   -h, --help             Print this help menu"
+   msg "   ${Grn}list${Nc}             List all applications available to launch"
+   msg "   ${Grn}help${Nc}             Print this help menu"
    msg
+   msg "Example:"
+   msg " $program_name bespokesynth ardour carla     # Start bespokesynth, ardour, and carla"
+   msg
+   msg "Check $homepage for updates"
+   exit "$1"
+}
+
+version() {
+   msg "$program_name v$program_ver"
    msg "Check $homepage for updates"
    exit "$1"
 }
@@ -76,45 +89,62 @@ pkgs_is_available() {
    done
 }
 
-# Checks if a command exists
-command_exists() { command -v "$1" > /dev/null; }
-
-# Helper functions for printing information
-msg() { echo "$@"; }
-err() { msg  "$@" >&2; }
-dbg() { ("${DEBUG:-false}" && err "$@") || true; }
 # returns true if you are root
 am_i_root() { test "$(id -u)" = 0; }
 
+# Checks if a command exists
+command_exists() { command -v "$1" > /dev/null; }
+
+# Get some colors for ~flare~
+Red='' Ylw='' Nc='' Grn='' Nc='';:
+# Colors for stdout
+if test -t 1; then
+   if command_exists tput; then
+      Grn="$(tput setaf 2)" Nc="$(tput sgr0)";:
+   else
+      Grn='[32m' Nc='(B[m';:
+   fi
+fi
+# Colors for stderr
+if test -t 2; then
+   if command_exists tput; then
+      Red="$(tput setaf 1)" Ylw="$(tput setaf 3)" Nc="$(tput sgr0)";:
+   else
+      Red='[31m' Ylw='[33m' Nc='(B[m';:
+   fi
+fi
+
 # Warn if running as root
 if am_i_root; then
-   err "Warning: This script does not need to be run as root."
+   err "${Ylw}Warning:${Nc} This script does not need to be run as root."
    sleep 2
 fi
 
 # Test if curl exists
 if ! command_exists curl; then
-   err 'Error: `curl` does not exist or could not be found in $PATH. Please install curl and try again.' >&2
+   err "${Red}Error:${Nc} \`curl\` does not exist or could not be found in $PATH. Please install curl and try again." >&2
    exit 1
 fi
 
 # Check if no arguments are passed
 if test $# = 0; then
-   err "Error: Please provide an option or a list or applications."
+   err "${Red}Error:${Nc} Please provide an option or a list or applications."
    usage 1
 fi
 
 # Very simple command line argument parsing
 case "$1" in
-   -l|--list) msg "Available packages:"; pkgs_list_available | sort | sed 's/^/  /'; exit;;
-   -h|--help) usage 0;;
-   -*) err "Error: option $1 does not exist."; usage 1;;
+   list) msg "Available packages:"; pkgs_list_available | sort | sed 's/^/  /'; exit;;
+   -h|--help|help) usage 0;;
+   -v|--version|version) version 0;;
+   # Don't allow packages that start with a '-' so grep doesn't complain
+   -*) err "${Red}Error:${Nc} option $1 does not exist."; err "See \`$program_name help\` for a list of all options."; exit 1;;
 esac
 
 # Exit if any unavailable applications were requested
 unavailable="$(pkgs_is_available "$@")"
 if [ -n "$unavailable" ]; then
-   msg "Error: Some of the requested packages are not available:"
+   msg "${Red}Error:${Nc} Some of the requested packages are not available:"
    msg "$unavailable"
    msg "See $program_name --list for a list of all available applications"
    exit 1
@@ -148,7 +178,7 @@ fi
 
 dbg "nix command is $nix"
 for package in "$@"; do
-   msg "Running $package with nix…"
+   msg "Running ${Grn}$package${Nc} with nix…"
    # arguments are quoted here because zsh doesn't like having the pound sign unescaped in some cases
    eval "$nix run '$flake#$package'" &
 done
