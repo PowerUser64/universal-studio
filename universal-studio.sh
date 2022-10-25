@@ -181,7 +181,7 @@ dbg "nix command is $nix"
 while test $# -gt 0; do
    pkg="$(eval "get_name $1")"
    args="$(eval "get_args $1")"
-   msg "Running ${Grn_o}$pkg ${Cyn_o}$args${Nc_o} with ${Grn_o}$(eval "get_name $nix")${Nc_o}…"
+   msg "Running ${Grn_o}$pkg${Cyn_o}${args:+ }$args${Nc_o} with ${Grn_o}$(eval "get_name $nix")${Nc_o}…"
    # arguments are quoted here because zsh doesn't like having the pound sign unescaped in some cases
    eval "$nix run '$flake#$pkg' -- $args" &
    shift
