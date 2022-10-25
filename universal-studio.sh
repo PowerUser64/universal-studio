@@ -41,7 +41,7 @@ flake='github:PowerUser64/universal-studio'
 script_dir="$(dirname "$(realpath "$0")")"
 nix_portable_location="$script_dir/nix-portable"
 
-application_list_name=myApplications
+application_list_name=Apps
 
 # Initialize FORCE_NIX_PORTABLE to false if it's unset
 FORCE_NIX_PORTABLE="${FORCE_NIX_PORTABLE:-false}"
