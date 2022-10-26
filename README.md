@@ -83,31 +83,35 @@ an issue to request the package or add it yourself and submit a pull request.
 Empty!
 -->
 
-High priority:
+**Software distribution:**
 
 * [ ] Ensure all nix packages we use are up-to-date
-* [ ] Update nix packages that need it
+* Update nix packages that need it
+  * [x] distrho
   * [ ] zrythm
-* [ ] Add wanted and missing packages to the nix package repository
+* Add wanted and missing packages to the nix package repository
   * Plugins
     * [ ] Wolf Shaper
     * [ ] DPF Plugins
     * [ ] OneTrick Simian
   * Programs
     * [ ] [RaySession](https://github.com/NixOS/nixpkgs/issues/194022)
-    * [ ] [Patchance](https://github.com/NixOS/nixpkgs/issues/194023)
-* [ ] Beautify readme
+    * [ ] [Patchance](https://github.com/NixOS/nixpkgs/issues/194023) - WIP
+
+**Interface:**
+
+* [x] Add options to `universal-studio`
+  * [x] `list` to show what packages can be launched
+* [x] Make an option in `universal-studio` to start
+  [Syncthing](https://syncthing.net/)
+
+**Housekeeping:**
+
+* Beautify readme
   * [ ] Banner
   * [ ] Badges
   * [ ] Blazingly fast
   * Other trendy things
-
-Low priority:
-
-* [ ] Add options to `universal-studio`
-  * [ ] `--list` to show what packages can be launched
-* [ ] Make an option in `universal-studio` to start
-  [Syncthing](https://syncthing.net/)
 
 ## FAQ
 <!-- TODO: add emojis to the questions so they stand out -->
