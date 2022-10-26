@@ -178,12 +178,20 @@ if "$FORCE_NIX_PORTABLE"; then
 fi
 
 dbg "nix command is $nix"
-while test $# -gt 0; do
-   pkg="$(eval "get_name $1")"
-   args="$(eval "get_args $1")"
+for package in "$@"; do
+   pkg="$(eval "get_name $package")"
+   args="$(eval "get_args $package")"
    msg "Running ${Grn_o}$pkg${Cyn_o}${args:+ }$args${Nc_o} with ${Grn_o}$(eval "get_name $nix")${Nc_o}…"
    # arguments are quoted here because zsh doesn't like having the pound sign unescaped in some cases
    eval "$nix run '$flake#$pkg' -- $args" &
+   # Replace arg array with pid's of running apps
+   set -- "$@" $!
    shift
 done
+
+# Pass on ctrl-c
+cleanup() { err;err "Finishing up…"; kill -TERM "$@"; }
+# shellcheck disable=SC2064
+trap "cleanup $*" INT
+
 wait
