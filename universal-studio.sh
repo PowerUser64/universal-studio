@@ -53,14 +53,14 @@ dbg() { ("${DEBUG:-false}" && err "$@") || true; }
 
 usage() {
    msg "Usage:"
-   msg " Launch applications: $program_name ${Grn_o}app_1${Nc_o} ${Grn_o}app_2${Nc_o} ${Grn_o}app_3${Nc_o} ${Grn_o}[...]${Nc_o}"
-   msg " Other functionality: $program_name ${Grn_o}[option]${Nc_o}"
+   msg " Launch applications: ${Grn_o}$program_name ${Cyn_o}app_1 app_2 app_3 [...]${Nc_o}"
+   msg " Other functionality: ${Grn_o}$program_name ${Cyn_o}[option]${Nc_o}"
    msg "  The options are:"
-   msg "   ${Grn_o}list${Nc_o}             List all applications available to launch"
-   msg "   ${Grn_o}help${Nc_o}             Print this help menu"
+   msg "   ${Cyn_o}list${Nc_o}             List all applications available to launch"
+   msg "   ${Cyn_o}help${Nc_o}             Print this help menu"
    msg
    msg "Example:"
-   msg " $program_name bespokesynth ardour carla     # Start bespokesynth, ardour, and carla"
+   msg " ${Grn_o}$program_name ${Cyn_o}bespokesynth ardour carla${Nc_o}     # Start bespokesynth, ardour, and carla"
    msg
    msg "Check $homepage for updates"
    exit "$1"
@@ -114,9 +114,9 @@ fi
 # Colors for stderr
 if test -t 2; then
    if command_exists tput; then
-      Red_e="$(tput setaf 1)" Grn_e="$(tput setaf 2)" Ylw_e="$(tput setaf 3)" Nc_e="$(tput sgr0)";:
+      Red_e="$(tput setaf 1)" Grn_e="$(tput setaf 2)" Ylw_e="$(tput setaf 3)" Cyn_e="$(tput setaf 6)" Nc_e="$(tput sgr0)";:
    else
-      Red_e='[31m' Grn_e='[32m' Ylw_e='[33m' Nc_e='(B[m';:
+      Red_e='[31m' Grn_e='[32m' Ylw_e='[33m' Cyn_e='[36m' Nc_e='(B[m';:
    fi
 fi
 
@@ -128,7 +128,7 @@ fi
 
 # Test if curl exists
 if ! command_exists curl; then
-   err "${Red_e}Error:${Nc_e} \`curl\` does not exist or could not be found in $PATH. Please install curl and try again." >&2
+   err "${Red_e}Error:${Nc_e} \`curl\` does not exist or could not be found in \$PATH. Please install curl and try again." >&2
    exit 1
 fi
 
@@ -152,7 +152,7 @@ unavailable="$(pkgs_is_available "$@")"
 if [ -n "$unavailable" ]; then
    err "${Red_e}Error:${Nc_e} Some of the requested packages are not available:"
    err "$unavailable"
-   err "See $Grn_e$program_name --list$Nc_e for a list of all available applications"
+   err "See \`${Grn_e}$program_name ${Cyn_e}list${Nc_e}\` for a list of all available applications"
    exit 1
 fi
 
