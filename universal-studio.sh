@@ -165,7 +165,7 @@ elif command_exists nix-portable; then  # check if nix-portable is in $PATH
 # Check if we haven't yet downloaded nix-portable
 elif ! test -x "$nix_portable_location"; then
    # Get nix-portable from GitHub releases
-   msg '`${Grn_o}nix-portable${Grn_e}` not found locally, downloading from github releases...'
+   msg "${Grn_o}\`nix-portable\`${Nc_o} not found locally, downloading from github releases..."
    curl -sSLo "$nix_portable_location" "$nix_portable_dl_url"
    chmod +x "$nix_portable_location"
    nix="$nix_portable_location nix"
