@@ -48,9 +48,9 @@
         # Plugins to load (lv2/…)
         Plugins = with pkgs; [
 
-          #######################
-          ###  Plugin packs   ###
-          #######################
+          ######################
+          ###  Plugin packs  ###
+          ######################
 
           # dpf-plugins  # not in repos yet
           # wolf-spectrum  # not in repos yet
@@ -66,9 +66,9 @@
           x42-plugins
           zam-plugins
 
-          #######################
-          ###  Instruments    ###
-          #######################
+          ######################
+          ###  Noise makers  ###
+          ######################
 
           # General-purpose
           cardinal
@@ -85,9 +85,9 @@
           helm
           x42-avldrums
 
-          #######################
-          ###    Effects      ###
-          #######################
+          ######################
+          ###    Effects     ###
+          ######################
 
           # Reverb
           aether-lv2
@@ -145,7 +145,7 @@
             done
           '';
       in
-      rec {
+      {
         # Executed by `nix build .#<name>`
         packages = flake-utils.lib.flattenTree {
           # This creates an entry self.packages.${system}.ardour with the wrapped program.
@@ -157,7 +157,7 @@
         };
         # Executed by `nix run .#<name>`
         apps = {
-          ardour       = { type = "app"; program = "${self.packages.${system}.ardour}/bin/ardour6"           ; };
+          ardour       = { type = "app"; program = "${self.packages.${system}.ardour}/bin/ardour7"           ; };
           audacity     = { type = "app"; program = "${self.packages.${system}.audacity}/bin/audacity"        ; };
           bespokesynth = { type = "app"; program = "${self.packages.${system}.bespokesynth}/bin/BespokeSynth"; };
           carla        = { type = "app"; program = "${self.packages.${system}.carla}/bin/carla"              ; };
