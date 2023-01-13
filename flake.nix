@@ -21,7 +21,20 @@
 
           ardour
           audacity
+          (
           bespokesynth
+          .overrideAttrs (new: { # get newest bespoke release
+              version = "1.1.0-nightly";
+
+              src = fetchFromGitHub {
+                owner = "BespokeSynth";
+                repo = "BespokeSynth";
+                rev = "54626b089f2eec258ae7aa30305dfe8dbceef833";
+                sha256 = "sha256-HD8C7quFo2PVvpc1QsMM9KWMjp5hoLJThBuUNStxgLw=";
+                fetchSubmodules = true;
+              };
+            }
+          ))
           carla
           zrythm
 
