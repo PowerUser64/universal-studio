@@ -28,18 +28,30 @@ program_name=universal-studio
 program_ver=0.0.2
 homepage=https://codeberg.org/PowerUser/universal-studio
 
+# Standalone mode: if false, the local flake and repository will be used.
+#                  if true, only the script is needed, and remote resources
+#                  (package list, etc) will be fetched from the online
+#                  repository
+#
+# To change this, you can set the STANDALONE environment variable
+standalone=${STANDALONE:-true}
+
 pkg_list_url=https://codeberg.org/PowerUser/universal-studio/raw/branch/main/flake.nix
 
 # Version of nix-portable to pull from nix-portable releases page
 nix_portable_version=v009
 nix_portable_dl_url=https://github.com/DavHau/nix-portable/releases/download/"$nix_portable_version"/nix-portable
 
-# Nix flake to run - TODO: figure out how to make this point to codeberg
-flake='github:PowerUser64/universal-studio'
-
 # Get the directory the script is in
 script_dir="$(dirname "$(realpath "$0")")"
 nix_portable_location="$script_dir/nix-portable"
+
+# Nix flake to run
+if "$standalone"; then
+   flake='github:PowerUser64/universal-studio'
+else
+   flake="$script_dir"
+fi
 
 application_list_name=Apps
 
@@ -79,8 +91,12 @@ get_args() { shift; if test $# -gt 0; then printf '%s ' "$@"; fi; }
 
 # Extract the list of applications from flake.nix
 pkgs_list_available() {
-   # Download the
-   curl -sSL "$pkg_list_url" | # Get the script from the repository
+   # Get the package list and filter through it to find the list of available packages
+   if "$standalone"; then
+      curl -sSL "$pkg_list_url"
+   else
+      cat "./flake.nix"
+   fi | # Get the whole flake
       sed -n /"$application_list_name"' =.\+\[$/,/\];/{ :loop; N; /\];/!{b loop}; p; q; }' | # Select the application list
       grep -o '\w\+$' # Select the lines with list elements on them
 }
@@ -101,7 +117,7 @@ am_i_root() { test "$(id -u)" = 0; }
 # Checks if a command exists
 command_exists() { command -v "$1" > /dev/null; }
 
-# Get some colors for ~flare~
+# Get some colors for ~flare~ (but don't use colors if output isn't a terminal)
 Red_e='' Grn_o='' Grn_e='' Ylw_e='' Cyn_o='' Nc_o='' Nc_e=''
 # Colors for stdout
 if test -t 1; then
@@ -159,7 +175,7 @@ fi
 # Find or get nix-portable, or select the system version of nix
 if command_exists nix && ! "$FORCE_NIX_PORTABLE"; then
    dbg '`nix` command detected, using it'
-   nix='nix --extra-experimental-features flakes --extra-experimental-features nix-command'
+   nix='nix --extra-experimental-features "flakes nix-command"'
 elif command_exists nix-portable; then  # check if nix-portable is in $PATH
    nix="nix-portable nix"
 # Check if we haven't yet downloaded nix-portable
