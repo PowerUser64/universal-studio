@@ -161,7 +161,7 @@
           audacity     = { type = "app"; program = "${self.packages.${system}.audacity}/bin/audacity"        ; };
           bespokesynth = { type = "app"; program = "${self.packages.${system}.bespokesynth}/bin/BespokeSynth"; };
           carla        = { type = "app"; program = "${self.packages.${system}.carla}/bin/carla"              ; };
-          zrythm       = { type = "app"; program = "${self.packages.${system}.carla}/bin/zrythm"             ; };
+          zrythm       = { type = "app"; program = "${self.packages.${system}.zrythm}/bin/zrythm"            ; };
         };
         # Used by `nix develop` (not really needed if you use nix run)
         devShell = pkgs.mkShell {
