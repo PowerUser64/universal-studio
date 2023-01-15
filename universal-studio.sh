@@ -72,7 +72,8 @@ usage() {
    msg "   ${Cyn_o}help${Nc_o}             Print this help menu"
    msg
    msg "Example:"
-   msg " ${Grn_o}$program_name ${Cyn_o}bespokesynth ardour carla${Nc_o}     # Start bespokesynth, ardour, and carla"
+   msg " # Start bespokesynth, ardour, and carla"
+   msg " ${Grn_o}$program_name ${Cyn_o}bespokesynth ardour carla${Nc_o}"
    msg
    msg "Check $homepage for updates"
    exit "$1"
