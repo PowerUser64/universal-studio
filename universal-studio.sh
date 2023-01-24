@@ -25,16 +25,12 @@
 set -eu
 
 program_name=universal-studio
-program_ver=0.0.2
+program_ver=0.0.3
 homepage=https://codeberg.org/PowerUser/universal-studio
 
-# Standalone mode: if false, the local flake and repository will be used.
-#                  if true, only the script is needed, and remote resources
-#                  (package list, etc) will be fetched from the online
-#                  repository
-#
-# To change this, you can set the STANDALONE environment variable
-standalone=${STANDALONE:-true}
+# Portable mode: enables the script to work without the need for the repository
+# To change this, you can set the PORTABLE_MODE environment variable (useful for development)
+portable_mode=${PORTABLE_MODE:-true}
 
 pkg_list_url=https://codeberg.org/PowerUser/universal-studio/raw/branch/main/flake.nix
 
@@ -47,7 +43,7 @@ script_dir="$(dirname "$(realpath "$0")")"
 nix_portable_location="$script_dir/nix-portable"
 
 # Nix flake to run
-if "$standalone"; then
+if "$portable_mode"; then
    flake='github:PowerUser64/universal-studio'
 else
    flake="$script_dir"
@@ -92,7 +88,7 @@ get_args() { shift; if test $# -gt 0; then printf '%s ' "$@"; fi; }
 # Extract the list of applications from flake.nix
 pkgs_list_available() {
    # Get the package list and filter through it to find the list of available packages
-   if "$standalone"; then
+   if "$portable_mode"; then
       curl -sSL "$pkg_list_url"
    else
       cat "./flake.nix"
@@ -151,6 +147,12 @@ fi
 # Check if no arguments are passed
 if test $# = 0; then
    err "${Red_e}Error:${Nc_e} Please provide an option or a list or applications."
+   usage 1
+fi
+
+# Check if no arguments are passed
+if "$portable_mode"; then
+   dbg "${Red_e}Error:${Nc_e} Please provide an option or a list or applications."
    usage 1
 fi
 
