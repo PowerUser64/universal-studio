@@ -87,7 +87,7 @@ Empty!
 
 * [ ] Ensure all nix packages we use are up-to-date
 * Update nix packages that need it
-  * [x] distrho
+  * [x] distrho - will be updated soon
   * [ ] zrythm
 * Add wanted and missing packages to the nix package repository
   * Plugins
@@ -96,7 +96,7 @@ Empty!
     * [ ] OneTrick Simian
   * Programs
     * [ ] [RaySession](https://github.com/NixOS/nixpkgs/issues/194022)
-    * [ ] [Patchance](https://github.com/NixOS/nixpkgs/issues/194023) - WIP
+    * [X] [Patchance](https://github.com/NixOS/nixpkgs/issues/194023) - WIP
 
 **Interface:**
 
