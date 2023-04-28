@@ -151,11 +151,11 @@ if test $# = 0; then
    usage 1
 fi
 
-# Check if no arguments are passed
-if "$portable_mode"; then
-   dbg "${Red_e}Error:${Nc_e} Please provide an option or a list or applications."
-   usage 1
-fi
+# # Check if no arguments are passed
+# if "$portable_mode"; then
+#    dbg "${Red_e}Error:${Nc_e} Please provide an option or a list or applications."
+#    usage 1
+# fi
 
 # Very simple command line argument parsing
 case "$1" in
