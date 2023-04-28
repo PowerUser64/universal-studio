@@ -22,17 +22,29 @@
           ardour
           audacity
           (
-          bespokesynth
-          .overrideAttrs (new: { # get newest bespoke release
-              version = "1.1.0-nightly";
-
+          bespokesynth-with-vst2
+          .overrideAttrs (new: {
+              enableVST2 = true;
+              version = "1.1.1";
               src = fetchFromGitHub {
                 owner = "BespokeSynth";
                 repo = "BespokeSynth";
-                rev = "54626b089f2eec258ae7aa30305dfe8dbceef833";
-                sha256 = "sha256-HD8C7quFo2PVvpc1QsMM9KWMjp5hoLJThBuUNStxgLw=";
+                rev = "8564ba19fdfad375955f3845e1aeaf9481c1899e";
+                sha256 = "sha256-qoCK0uq0LEkQlVSWnw3RC2FcABvS85QSzbZMZOvuDCE=";
                 fetchSubmodules = true;
               };
+              patches = [
+                # osc fix (#1222)
+                (fetchpatch {
+                  url = "https://github.com/BespokeSynth/BespokeSynth/pull/1222.patch";
+                  hash = "sha256-HPp7R1/l69SDwp8wDP6KlrdSACJYQOOw8YLes1W1xo8=";
+                })
+                # oversampling fix (#1192)
+                (fetchpatch {
+                  url = "https://github.com/BespokeSynth/BespokeSynth/pull/1192.patch";
+                  hash = "sha256-7f8+sJjvY8IT+daZ1MuhihdM71SDG16iGjgvdGIpJ9U=";
+                })
+              ];
             }
           ))
           carla
