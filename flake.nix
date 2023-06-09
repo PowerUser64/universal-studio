@@ -29,20 +29,20 @@
               src = fetchFromGitHub {
                 owner = "BespokeSynth";
                 repo = "BespokeSynth";
-                rev = "8564ba19fdfad375955f3845e1aeaf9481c1899e";
-                sha256 = "sha256-qoCK0uq0LEkQlVSWnw3RC2FcABvS85QSzbZMZOvuDCE=";
+                rev = "2bf5c703b50c55fc7764b09e58066f52ba31a69c";
+                sha256 = "sha256-5yYgLVl5Kh4WqjScWZgoifNLS7CgEY33Txl+/mWllNw=";
                 fetchSubmodules = true;
               };
               patches = [
-                # osc fix (#1222)
-                (fetchpatch {
-                  url = "https://github.com/BespokeSynth/BespokeSynth/pull/1222.patch";
-                  hash = "sha256-HPp7R1/l69SDwp8wDP6KlrdSACJYQOOw8YLes1W1xo8=";
-                })
                 # oversampling fix (#1192)
                 (fetchpatch {
                   url = "https://github.com/BespokeSynth/BespokeSynth/pull/1192.patch";
                   hash = "sha256-7f8+sJjvY8IT+daZ1MuhihdM71SDG16iGjgvdGIpJ9U=";
+                })
+                # scrollwheel to adjust the Q slider
+                (fetchpatch {
+                  url = "https://github.com/BespokeSynth/BespokeSynth/pull/1254.patch";
+                  hash = "sha256-BY2CN6/41Q1xqn7ETWhpGkYY8M9x/cyRxo16jIFQouk=";
                 })
               ];
             }
