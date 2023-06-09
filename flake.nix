@@ -48,6 +48,7 @@
             }
           ))
           carla
+          raysession
           zrythm
 
           #######################
@@ -166,6 +167,7 @@
           bespokesynth = wrapProgram { programToWrap = pkgs.bespokesynth; };
           carla        = wrapProgram { programToWrap = pkgs.carla       ; };
           zrythm       = wrapProgram { programToWrap = pkgs.zrythm      ; };
+          raysession   = pkgs.raysession; # raysession doesn't need all the other packages
         };
         # Executed by `nix run .#<name>`
         apps = {
@@ -174,6 +176,7 @@
           bespokesynth = { type = "app"; program = "${self.packages.${system}.bespokesynth}/bin/BespokeSynth"; };
           carla        = { type = "app"; program = "${self.packages.${system}.carla}/bin/carla"              ; };
           zrythm       = { type = "app"; program = "${self.packages.${system}.zrythm}/bin/zrythm"            ; };
+          raysession   = { type = "app"; program = "${self.packages.${system}.raysession}/bin/raysession"    ; };
         };
         # Used by `nix develop` (not really needed if you use nix run)
         devShell = pkgs.mkShell {
