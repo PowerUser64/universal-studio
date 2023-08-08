@@ -22,7 +22,7 @@
           ardour
           audacity
           (
-          bespokesynth-with-vst2
+          bespokesynth
           .overrideAttrs (new: {
               enableVST2 = true;
               version = "1.1.1";
@@ -55,6 +55,7 @@
           ###  Miscellaneous  ###
           #######################
 
+          sonobus
           syncthing
 
         ];
@@ -118,6 +119,12 @@
           ChowCentaur
           ChowPhaser
 
+          ######################
+          ###   Misc Other   ###
+          ######################
+
+          sonobus
+
         ];
         # lv2_path will look like:
         # ${helm}/lib/lv2:$HOME/.lv2:$HOME/.nix-profile/lib/lv2:/run/current-system/sw/lib/lv2
@@ -177,6 +184,7 @@
           carla        = { type = "app"; program = "${self.packages.${system}.carla}/bin/carla"              ; };
           zrythm       = { type = "app"; program = "${self.packages.${system}.zrythm}/bin/zrythm"            ; };
           raysession   = { type = "app"; program = "${self.packages.${system}.raysession}/bin/raysession"    ; };
+          sonobus      = { type = "app"; program = "${self.packages.${system}.sonobus}/bin/sonobus"          ; };
         };
         # Used by `nix develop` (not really needed if you use nix run)
         devShell = pkgs.mkShell {
