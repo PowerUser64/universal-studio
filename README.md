@@ -77,7 +77,7 @@ repository](https://github.com/NixOS/nixpkgs/). If you do find it, please open
 an issue to request the package or add it yourself and submit a pull request.
 
 <!-- TODO: Move TODO list below the FAQ -->
-<!-- ## TODO -->
+## TODO
 
 <!-- Hidden TODO list:
 Empty!
@@ -104,7 +104,7 @@ Empty!
 * [x] Make an option in `universal-studio` to start
   [Syncthing](https://syncthing.net/) -->
 
-**Housekeeping:**
+<!-- **Housekeeping:** -->
 
 * Beautify readme
   * [ ] Banner
@@ -148,11 +148,10 @@ manual](https://nixos.org/manual/nix/stable/command-ref/nix-collect-garbage.html
 
 ## Credits
 
-NixOS forum - Huge thank you to
-[@tobiasBora](https://discourse.nixos.org/u/tobiasBora) on the NixOS forum for
-helping get this project started in nix. You can read our forum post
-[here](https://discourse.nixos.org/t/22191). This project would not have been
-possible without his support.
+Huge credit to [@tobiasBora](https://discourse.nixos.org/u/tobiasBora) on
+the NixOS forum for helping get this project started in nix. You can read our
+forum post [here](https://discourse.nixos.org/t/22191). This project would not
+have been possible without his support.
 
 [pacew/unfatarians-studio](https://codeberg.org/pacew/unfatarians-studio) -
 This is the beginning of this project, as a docker image. Developing it as a
