@@ -77,18 +77,17 @@ repository](https://github.com/NixOS/nixpkgs/). If you do find it, please open
 an issue to request the package or add it yourself and submit a pull request.
 
 <!-- TODO: Move TODO list below the FAQ -->
-## TODO
+<!-- ## TODO -->
 
 <!-- Hidden TODO list:
 Empty!
 -->
 
-**Software distribution:**
+<!-- **Software distribution:**
 
 * [ ] Ensure all nix packages we use are up-to-date
 * Update nix packages that need it
-  * [x] distrho - will be updated soon
-  * [ ] zrythm
+  * [x]
 * Add wanted and missing packages to the nix package repository
   * Plugins
     * [ ] Wolf Shaper
@@ -96,14 +95,14 @@ Empty!
     * [ ] OneTrick Simian
   * Programs
     * [ ] [RaySession](https://github.com/NixOS/nixpkgs/issues/194022)
-    * [X] [Patchance](https://github.com/NixOS/nixpkgs/issues/194023) - WIP
+    * [X] [Patchance](https://github.com/NixOS/nixpkgs/issues/194023) - WIP -->
 
-**Interface:**
+<!-- **Interface:**
 
 * [x] Add options to `universal-studio`
   * [x] `list` to show what packages can be launched
 * [x] Make an option in `universal-studio` to start
-  [Syncthing](https://syncthing.net/)
+  [Syncthing](https://syncthing.net/) -->
 
 **Housekeeping:**
 
@@ -152,7 +151,8 @@ manual](https://nixos.org/manual/nix/stable/command-ref/nix-collect-garbage.html
 NixOS forum - Huge thank you to
 [@tobiasBora](https://discourse.nixos.org/u/tobiasBora) on the NixOS forum for
 helping get this project started in nix. You can read our forum post
-[here](https://discourse.nixos.org/t/22191).
+[here](https://discourse.nixos.org/t/22191). This project would not have been
+possible without his support.
 
 [pacew/unfatarians-studio](https://codeberg.org/pacew/unfatarians-studio) -
 This is the beginning of this project, as a docker image. Developing it as a
