@@ -34,7 +34,7 @@ standalone_mode=${STANDALONE:-false}
 pkg_list_url=https://codeberg.org/PowerUser/universal-studio/raw/branch/main/flake.nix
 
 # Version of nix-portable to pull from nix-portable releases page
-nix_portable_version=v009
+nix_portable_version=v010
 nix_portable_dl_url=https://github.com/DavHau/nix-portable/releases/download/"$nix_portable_version"/nix-portable
 
 # Get the directory the script is in
