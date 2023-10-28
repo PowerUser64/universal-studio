@@ -21,27 +21,7 @@
 
           ardour
           audacity
-          (
           bespokesynth
-          .overrideAttrs (new: {
-              enableVST2 = true;
-              version = "1.1.1";
-              src = fetchFromGitHub {
-                owner = "BespokeSynth";
-                repo = "BespokeSynth";
-                rev = "7729472a9d4a0447682b1c9c89217dda17cda98c";
-                sha256 = "sha256-Hz6FiR0z2vTtOFlcPeO/dYalwid2tdxhJ+vsc6tHVUM=";
-                fetchSubmodules = true;
-              };
-              patches = [
-                # bypass rework (#1418)
-                (fetchpatch {
-                  url = "https://github.com/BespokeSynth/BespokeSynth/pull/1418.patch";
-                  hash = "sha256-lraI7uXW6ddWt2dQOncOJLyITNBYN5uSYXdlBw/ab1E=";
-                })
-              ];
-            }
-          ))
           carla
           raysession
           zrythm
@@ -173,7 +153,7 @@
         };
         # Executed by `nix run .#<name>`
         apps = {
-          ardour       = { type = "app"; program = "${self.packages.${system}.ardour}/bin/ardour7"           ; };
+          ardour       = { type = "app"; program = "${self.packages.${system}.ardour}/bin/ardour8"           ; };
           audacity     = { type = "app"; program = "${self.packages.${system}.audacity}/bin/audacity"        ; };
           bespokesynth = { type = "app"; program = "${self.packages.${system}.bespokesynth}/bin/BespokeSynth"; };
           carla        = { type = "app"; program = "${self.packages.${system}.carla}/bin/carla"              ; };
