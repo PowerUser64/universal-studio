@@ -116,7 +116,7 @@ Empty!
 <!-- TODO: add emojis to the questions so they stand out -->
 ### What does `universal-studio` do?
 
-Universal launcher works in one of two ways, depending on whether you have the
+Universal studio works in one of two ways, depending on whether you have the
 `nix` command already. If you have the `nix` command, it runs the project as a
 flake, using the system version of `nix`. If you don't have the `nix` command,
 it downloads a static `nix` binary from
