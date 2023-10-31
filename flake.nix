@@ -56,7 +56,6 @@
           zam-plugins
 
           # b.music
-          bangr
           bchoppr
           bjumblr
           boops
