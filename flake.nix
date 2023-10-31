@@ -55,14 +55,30 @@
           x42-plugins
           zam-plugins
 
+          # b.music
+          bangr
+          bchoppr
+          bjumblr
+          boops
+          bschaffl
+          bsequencer
+          bslizr
+
           ######################
           ###  Noise makers  ###
           ######################
 
           # General-purpose
+          # vital
           cardinal
+          helm
           odin2
           surge-XT
+          zynaddsubfx
+
+          # Sound fonts
+          sfizz
+          fluidsynth
           x42-gmsynth
 
           # Specialized
@@ -71,7 +87,6 @@
           # Drums
           ChowKick
           geonkick
-          helm
           x42-avldrums
 
           ######################
@@ -87,18 +102,21 @@
           diopser
           noise-repellent
           rnnoise-plugin
-          wolf-shaper
+          ChowPhaser
 
-          # Misc. Processing
+          # Distortion
           CHOWTapeModel
           ChowCentaur
-          ChowPhaser
+          fire
+          wolf-shaper
 
           ######################
           ###   Misc Other   ###
           ######################
 
           sonobus
+          carla
+          stochas
 
         ];
         # lv2_path will look like:
