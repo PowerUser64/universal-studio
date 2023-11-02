@@ -136,15 +136,24 @@ in your terminal gives you an error, you aren't using nix.
 
 #### I am not using `nix`
 
-1. Remove the `~/.nix-portable` directory
+1. Remove the `~/.nix-portable` directory (you may need to run `chmod -R 777`
+   on it first)
 2. Remove the `nix-portable` binary and the `universal-studio` script from
    where you are storing them.
+3. If you don't use nix at all, you'll also likely want to remove these files
+   and directories:
+  - `~/.nix-defexpr`
+  - `~/.nix-channels`
+  - `~/.nix-profile`
 
 #### I am using `nix`
 
 If you are using `nix`, you should look into the `nix-collect-garbage` command,
 which you can learn about in the [nix
 manual](https://nixos.org/manual/nix/stable/command-ref/nix-collect-garbage.html).
+If you want to uninstall nix, the nix manual has information on how to do that
+in the [uninstall
+section](https://nixos.org/manual/nix/stable/installation/uninstall).
 
 ## Credits
 
