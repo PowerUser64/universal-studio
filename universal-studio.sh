@@ -41,13 +41,6 @@ nix_portable_dl_url=https://github.com/DavHau/nix-portable/releases/download/"$n
 script_dir="$(dirname "$(realpath "$0")")"
 nix_portable_location="$script_dir/nix-portable"
 
-# Nix flake to run
-if "$standalone_mode"; then
-   flake='github:PowerUser64/universal-studio'
-else
-   flake="$script_dir"
-fi
-
 application_list_name=Apps
 
 # Initialize FORCE_NIX_PORTABLE to false if it's unset
@@ -57,6 +50,18 @@ FORCE_NIX_PORTABLE="${FORCE_NIX_PORTABLE:-false}"
 msg() { echo "$@"; }
 err() { msg  "$@" >&2; }
 dbg() { ("${DEBUG:-false}" && err "$@") || true; }
+
+# Check if in standalone mode, set $flake accordingly
+if "$standalone_mode"; then
+   flake='github:PowerUser64/universal-studio'
+else
+   if ! [ -f "$script_dir"/flake.nix ]; then
+      err "Error: script is in standalone mode but flake.nix could not be found."
+      err "Please either disable standalone mode (set STANDALONE=false) or clone the repository for standalone mode to work."
+      exit 1
+   fi
+   flake="$script_dir"
+fi
 
 usage() {
    msg "Usage:"
@@ -91,7 +96,7 @@ pkgs_list_available() {
    if "$standalone_mode"; then
       curl -sSL "$pkg_list_url"
    else
-      cat "./flake.nix"
+      cat "$script_dir/flake.nix"
    fi | # Get the whole flake
       sed -n /"$application_list_name"' =.\+\[$/,/\];/{ :loop; N; /\];/!{b loop}; p; q; }' | # Select the application list
       grep -o '\w\+$' # Select the lines with list elements on them
