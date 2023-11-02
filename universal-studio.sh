@@ -279,7 +279,7 @@ for package in "$@"; do
    args="$(eval "get_args $package")"
    msg "Running ${Grn_o}$pkg${Cyn_o}${args:+ }$args${Nc_o} with ${Grn_o}$(eval "get_name $nix")${Nc_o}…"
    # arguments are quoted here because zsh doesn't like having the pound sign unescaped in some cases
-   eval "$nix run '$flake#$pkg' -- $args" &
+   eval "run_wrapped $nix run '$flake#$pkg' -- $args" &
    # Replace arg array with pid's of running apps
    set -- "$@" $!
    shift
