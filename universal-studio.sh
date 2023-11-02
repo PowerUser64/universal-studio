@@ -166,6 +166,25 @@ makeBindArgs(){
   done
 }
 
+# Runs a command, but wrapped with bubblewrap to disable access to certain directories
+run_wrapped() {
+   # NixOS doesn't require nixGL
+   if test -s /bin/sh && [[ "$(realpath /bin/sh)" == /nix/store/* ]]; then
+      "$@"
+   else
+      collectBinds
+      makeBindArgs --bind " " $toBind
+      $nix run 'nixpkgs#bubblewrap' -- \
+         --bind "$(mktemp -d)" / \
+         --dev-bind /dev /dev \
+         $binds \
+         \
+         $nix run 'github:nix-community/nixGL#nixGLIntel' -- \
+         \
+         "$@"
+   fi
+}
+
 # returns true if you are root
 am_i_root() { test "$(id -u)" = 0; }
 
