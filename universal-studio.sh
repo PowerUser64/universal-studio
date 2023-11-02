@@ -1,4 +1,4 @@
-#!/usr/bin/env sh
+#!/usr/bin/env bash
 # The GPLv3 License (GPLv3)
 #
 # Copyright (c) 2022 Blakely North
@@ -107,6 +107,84 @@ pkgs_is_available() {
    done
 }
 
+# bubblewrap helper function from nix-portable (source: https://github.com/DavHau/nix-portable/blob/master/default.nix#L241-L287)
+# The only modification is to remove paths to plugins (/usr/lib/vst3, etc)
+collectBinds(){
+  ### gather paths to bind for proot
+  # we cannot bind / to / without running into a lot of trouble, therefore
+  # we need to collect all top level directories and bind them inside an empty root
+  pathsTopLevel="$(find / -mindepth 1 -maxdepth 1 -not -name nix -not -name dev -not -name usr)"
+  pathsUsr="$(find /usr -mindepth 1 -maxdepth 1 -not -name lib)"
+  pathsLib="$(find /usr/lib -mindepth 1 -maxdepth 1 -not -name lv2 -not -name clap -not -name vst -not -name vst3 -not -name ladspa -not -name lxvst -not -name dssi)"
+
+  toBind=""
+  for p in $pathsTopLevel $pathsUsr $pathsLib; do
+    if [ -e "$p" ]; then
+      real=$(realpath "$p")
+      if [ -e "$real" ]; then
+        if [[ "$real" == /nix/store/* ]]; then
+          storePath=$(storePathOfFile "$real")
+          toBind="$toBind $storePath $storePath"
+        else
+          toBind="$toBind $real $p"
+        fi
+      fi
+    fi
+  done
+
+  # TODO: add /var/run/dbus/system_bus_socket
+  paths="/etc/host.conf /etc/hosts /etc/hosts.equiv /etc/mtab /etc/netgroup /etc/networks /etc/passwd /etc/group /etc/nsswitch.conf /etc/resolv.conf /etc/localtime $HOME"
+
+  for p in $paths; do
+    if [ -e "$p" ]; then
+      real=$(realpath "$p")
+      if [ -e "$real" ]; then
+        if [[  "$real" == /nix/store/* ]]; then
+          storePath=$(storePathOfFile "$real")
+          toBind="$toBind $storePath $storePath"
+        else
+          toBind="$toBind $real $real"
+        fi
+      fi
+    fi
+  done
+}
+
+# bubblewrap helper function from nix-portable (source: https://github.com/DavHau/nix-portable/blob/master/default.nix#L290-L303)
+makeBindArgs(){
+  arg="$1"; shift
+  sep="$1"; shift
+  binds=""
+  while :; do
+    if [ -n "${1:-}" ]; then
+      from="${1:-}"; shift
+      to="${1:-}"; shift || { echo "no bind destination provided for $from!"; exit 3; }
+      binds="$binds $arg $from$sep$to";
+    else
+      break
+    fi
+  done
+}
+
+# Runs a command, but wrapped with bubblewrap to disable access to certain directories
+run_wrapped() {
+   # NixOS doesn't require nixGL
+   if test -s /bin/sh && [[ "$(realpath /bin/sh)" == /nix/store/* ]]; then
+      eval "$*"
+   else
+      collectBinds
+      makeBindArgs --bind " " $toBind
+      eval "$nix" run 'nixpkgs#bubblewrap' -- \
+         --bind "$(mktemp -d)" / \
+         --dev-bind /dev /dev \
+         '$binds' \
+         \
+         "$nix" run 'github:nix-community/nixGL#nixGLIntel' -- \
+         \
+         "$*"
+   fi
+}
+
 # returns true if you are root
 am_i_root() { test "$(id -u)" = 0; }
 
@@ -201,7 +279,8 @@ for package in "$@"; do
    args="$(eval "get_args $package")"
    msg "Running ${Grn_o}$pkg${Cyn_o}${args:+ }$args${Nc_o} with ${Grn_o}$(eval "get_name $nix")${Nc_o}…"
    # arguments are quoted here because zsh doesn't like having the pound sign unescaped in some cases
-   eval "$nix run '$flake#$pkg' -- $args" &
+   cmd=("$nix" run "$flake#$pkg" -- "$args")
+   run_wrapped "${cmd[@]}" &
    # Replace arg array with pid's of running apps
    set -- "$@" $!
    shift
