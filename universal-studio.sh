@@ -1,4 +1,4 @@
-#!/usr/bin/env sh
+#!/usr/bin/env bash
 # The GPLv3 License (GPLv3)
 #
 # Copyright (c) 2022 Blakely North
