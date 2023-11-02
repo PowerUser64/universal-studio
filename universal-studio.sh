@@ -152,13 +152,13 @@ collectBinds(){
 
 # bubblewrap helper function from nix-portable (source: https://github.com/DavHau/nix-portable/blob/master/default.nix#L290-L303)
 makeBindArgs(){
-  arg=$1; shift
-  sep=$1; shift
+  arg="$1"; shift
+  sep="$1"; shift
   binds=""
   while :; do
     if [ -n "${1:-}" ]; then
-      from="$1"; shift
-      to="$1"; shift || { echo "no bind destination provided for $from!"; exit 3; }
+      from="${1:-}"; shift
+      to="${1:-}"; shift || { echo "no bind destination provided for $from!"; exit 3; }
       binds="$binds $arg $from$sep$to";
     else
       break
@@ -170,18 +170,18 @@ makeBindArgs(){
 run_wrapped() {
    # NixOS doesn't require nixGL
    if test -s /bin/sh && [[ "$(realpath /bin/sh)" == /nix/store/* ]]; then
-      "$@"
+      eval "$*"
    else
       collectBinds
       makeBindArgs --bind " " $toBind
-      $nix run 'nixpkgs#bubblewrap' -- \
+      eval "$nix" run 'nixpkgs#bubblewrap' -- \
          --bind "$(mktemp -d)" / \
          --dev-bind /dev /dev \
-         $binds \
+         '$binds' \
          \
-         $nix run 'github:nix-community/nixGL#nixGLIntel' -- \
+         "$nix" run 'github:nix-community/nixGL#nixGLIntel' -- \
          \
-         "$@"
+         "$*"
    fi
 }
 
@@ -279,7 +279,8 @@ for package in "$@"; do
    args="$(eval "get_args $package")"
    msg "Running ${Grn_o}$pkg${Cyn_o}${args:+ }$args${Nc_o} with ${Grn_o}$(eval "get_name $nix")${Nc_o}…"
    # arguments are quoted here because zsh doesn't like having the pound sign unescaped in some cases
-   eval "run_wrapped $nix run '$flake#$pkg' -- $args" &
+   cmd=("$nix" run "$flake#$pkg" -- "$args")
+   run_wrapped "${cmd[@]}" &
    # Replace arg array with pid's of running apps
    set -- "$@" $!
    shift
