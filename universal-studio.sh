@@ -259,8 +259,8 @@ if "$standalone_mode"; then
    flake='github:PowerUser64/universal-studio'
 else
    if ! [ -f "$script_dir"/flake.nix ]; then
-      err "${Red_e}Error:${Nc_e} script is in standalone mode but flake.nix could not be found."
-      err "Please either disable standalone mode (set STANDALONE=false) or clone the repository for standalone mode to work."
+      err "${Red_e}Error:${Nc_e} flake.nix could not be found."
+      err "Please either enable standalone mode (set STANDALONE=true) or clone the repository and disable standalone mode."
       exit 1
    fi
    flake="$script_dir"
