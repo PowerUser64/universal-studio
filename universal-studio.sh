@@ -16,6 +16,14 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+
+### HELLO THERE!
+# Welcome to the source code 😎
+# Check out the variables at the top here for some quick ways to customize this
+# script. Otherwise, feel free to take a look around! If you have any
+# questions, feel free to file an issue to ask it.
+
+
 # Main repository available at https://codeberg.org/PowerUser/universal-studio
 
 # Requires: curl
@@ -25,29 +33,31 @@
 set -eu
 
 program_name=universal-studio
-program_ver=0.2.0
+program_ver=0.1.0
 homepage=https://codeberg.org/PowerUser/universal-studio
 
 # Standalone mode: enables the script to work without the need for the repository (enabled in releases)
 standalone_mode=${STANDALONE:-false}
 
 # Enable automatic update checks
-check_updates=${CHECK_UPDATES:-false}
+auto_check_updates=${AUTO_CHECK_UPDATES:-false}
 
-raw_repo=https://codeberg.org/PowerUser/universal-studio/raw/branch/main
+raw_repo_url=https://codeberg.org/PowerUser/universal-studio/raw/branch
+release_url=https://codeberg.org/PowerUser/universal-studio/releases/download
 
 # where to check updates from
-update_url=$raw_repo/universal-studio.sh
+update_url=$raw_repo_url/main/universal-studio.sh
 
 # url to get package list (flake.nix)
-pkg_list_url=$raw_repo/flake.nix
+pkg_list_url=$raw_repo_url/main/flake.nix
 
 # Version of nix-portable to pull from nix-portable releases page
 nix_portable_version=v010
 nix_portable_dl_url=https://github.com/DavHau/nix-portable/releases/download/"$nix_portable_version"/nix-portable
 
 # Get the directory the script is in
-script_dir="$(dirname "$(realpath "$0")")"
+script_self="$(realpath "$0")"
+script_dir="$(dirname "$script_self")"
 nix_portable_location="$script_dir/nix-portable"
 
 application_list_name=Apps
@@ -68,8 +78,11 @@ usage() {
    msg " Launch applications: ${Grn_o}$program_name ${Cyn_o}app_1 app_2 app_3 [...]${Nc_o}"
    msg " Other functionality: ${Grn_o}$program_name ${Cyn_o}[option]${Nc_o}"
    msg "  The options are:"
-   msg "   ${Cyn_o}list${Nc_o}             List all applications available to launch"
-   msg "   ${Cyn_o}help${Nc_o}             Print this help menu"
+   msg "   ${Cyn_o}list${Nc_o}                 List all applications available to launch"
+   msg "   ${Cyn_o}update <0.1.0|main>${Nc_o}  Updates to a specified branch or version of this script (e.g. $program_ver or 'main')"
+   msg "   ${Cyn_o}checkupdate${Nc_o}          Check for updates to this script"
+   msg "   ${Cyn_o}version${Nc_o}              Prints version info"
+   msg "   ${Cyn_o}help${Nc_o}                 Print this help menu"
    msg
    msg "Example:"
    msg " # Start bespokesynth, ardour, and carla"
@@ -95,6 +108,55 @@ verlt() { [ "$1" = "$2" ] && return 1 || verlte "$1" "$2"; }
 get_name() { printf '%s' "$1"; }
 # Print all arguments but the first argument
 get_args() { shift; if test $# -gt 0; then printf '%s ' "$@"; fi; }
+
+# Update to a given version
+self_update() {
+   if [ -n "$1" ]; then
+      tmp_newver="$(mktemp --suffix="-$program_name-new-$program_ver")"
+      tmp_oldver="$(mktemp --suffix="-$program_name-previous-$program_ver")"
+      # check if it's a version number or a branch
+      if grep -Pq 'v?\d+\.\d+\.\d+$' <<< "$1"; then
+         if curl -sSL "$release_url/$1/universal-studio" > "$tmp_newver" && ! grep -Pqm 1 '^Not [Ff]ound\.?$' "$tmp_newver"; then
+            # update files
+            cat "$script_self" > "$tmp_oldver"
+            cat "$tmp_newver" > "$script_self"
+         else
+            err "${Red_e}Error:${Nc_e} couldn't fetch version '$1'"
+            rm "$tmp_newver" "$tmp_oldver"
+            exit 1
+         fi
+      else
+         if curl -sSL "$raw_repo_url/$1/universal-studio.sh" > "$tmp_newver" && ! grep -Pqm 1 '^Not [Ff]ound\.?$' "$tmp_newver"; then
+            # update files
+            cat "$script_self" > "$tmp_oldver"
+            cat "$tmp_newver" > "$script_self"
+         else
+            # NOTE: it will get here if the version above was entered incorrectly too
+            err "${Red_e}Error:${Nc_e} couldn't fetch branch '$1'"
+            rm "$tmp_newver" "$tmp_oldver"
+            exit 1
+         fi
+      fi
+      msg "Old version has been copied to: $tmp_oldver"
+      msg "${Grn_o}Update success!${Nc_o}"
+      exit 0;
+   else
+      err "${Red_e}Error:${Nc_e} please provide a version to update to ('main' for the latest unstable version)"
+      err "See project homepage for a list of all versions: $homepage"
+   fi
+}
+
+# checks for updates
+check_update() {
+   latest_ver="$(curl -sSL "$update_url" | grep -Po 'program_ver=\K\d+\.\d+\.\d+$')"
+   if verlte "$program_ver" "$latest_ver"; then
+      msg "${Ylw_o}Info:${Nc_o} a new version is available!"
+      msg "See project homepage for updates: $homepage"
+   elif $1; then
+      msg "No new version is available"
+   fi
+   $1 && msg "(current: v$program_ver latest: v$latest_ver)"
+}
 
 # Extract the list of applications from flake.nix
 pkgs_list_available() {
@@ -205,12 +267,8 @@ else
 fi
 
 # See if a new version is available
-if "$standalone_mode" && "$check_updates"; then
-   latest_ver="$(curl -sSL "$update_url" | grep -Po 'program_ver=\K\d+\.\d+\.\d+$')"
-   if verlte "$program_ver" "$latest_ver"; then
-      msg "${Ylw_o}Info:${Nc_o} a new version is available! (current: v$program_ver latest: v$latest_ver)"
-      msg "See project homepage for updates: $homepage"
-   fi
+if "$standalone_mode" && "$auto_check_updates"; then
+   check_update false
 fi
 
 # Warn if running as root
@@ -240,6 +298,8 @@ fi
 # Very simple command line argument parsing
 case "$1" in
    list) msg "Available packages:"; pkgs_list_available | sort | sed 's/^/  /'; exit;;
+   update) shift; self_update "${1:-}";;
+   checkupdate) shift; check_update true;;
    -h|--help|help) usage 0;;
    -v|--version|version) version 0;;
    # Don't allow packages that start with a '-' so grep doesn't complain
