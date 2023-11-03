@@ -25,13 +25,22 @@
 set -eu
 
 program_name=universal-studio
-program_ver=0.0.3
+program_ver=0.2.0
 homepage=https://codeberg.org/PowerUser/universal-studio
 
 # Standalone mode: enables the script to work without the need for the repository (enabled in releases)
 standalone_mode=${STANDALONE:-false}
 
-pkg_list_url=https://codeberg.org/PowerUser/universal-studio/raw/branch/main/flake.nix
+# Enable automatic update checks
+check_updates=${CHECK_UPDATES:-false}
+
+raw_repo=https://codeberg.org/PowerUser/universal-studio/raw/branch/main
+
+# where to check updates from
+update_url=$raw_repo/universal-studio.sh
+
+# url to get package list (flake.nix)
+pkg_list_url=$raw_repo/flake.nix
 
 # Version of nix-portable to pull from nix-portable releases page
 nix_portable_version=v010
@@ -54,18 +63,6 @@ msg() { echo "$@"; }
 err() { msg  "$@" >&2; }
 dbg() { ("${DEBUG:-false}" && err "$@") || true; }
 
-# Check if in standalone mode, set $flake accordingly
-if "$standalone_mode"; then
-   flake='github:PowerUser64/universal-studio'
-else
-   if ! [ -f "$script_dir"/flake.nix ]; then
-      err "Error: script is in standalone mode but flake.nix could not be found."
-      err "Please either disable standalone mode (set STANDALONE=false) or clone the repository for standalone mode to work."
-      exit 1
-   fi
-   flake="$script_dir"
-fi
-
 usage() {
    msg "Usage:"
    msg " Launch applications: ${Grn_o}$program_name ${Cyn_o}app_1 app_2 app_3 [...]${Nc_o}"
@@ -87,6 +84,12 @@ version() {
    msg "Check $homepage for updates"
    exit "$1"
 }
+
+
+# version comparison functions from stackoverflow: https://stackoverflow.com/a/4024263/11162605
+verlte() { [  "$1" = "$(echo -e "$1\n$2" | sort -V | head -n1)" ]; }
+# shellcheck disable=SC2015
+verlt() { [ "$1" = "$2" ] && return 1 || verlte "$1" "$2"; }
 
 # Print the first argument
 get_name() { printf '%s' "$1"; }
@@ -170,21 +173,43 @@ am_i_root() { test "$(id -u)" = 0; }
 command_exists() { command -v "$1" > /dev/null; }
 
 # Get some colors for ~flare~ (but don't use colors if output isn't a terminal)
-Red_e='' Grn_o='' Grn_e='' Ylw_e='' Cyn_o='' Nc_o='' Nc_e=''
 # Colors for stdout
+Cyn_o='' Ylw_o='' Grn_o='' Nc_o=''
 if test -t 1; then
    if command_exists tput; then
-      Grn_o="$(tput setaf 2)" Cyn_o="$(tput setaf 6)" Nc_o="$(tput sgr0)";:
+      Grn_o="$(tput setaf 2)" Ylw_o="$(tput setaf 3)" Cyn_o="$(tput setaf 6)" Nc_o="$(tput sgr0)";:
    else
-      Grn_o='[32m' Cyn_o='[36m' Nc_o='(B[m';:
+      Grn_o='[32m' Ylw_o='[33m' Cyn_o='[36m' Nc_o='(B[m';:
    fi
 fi
 # Colors for stderr
+Red_e='' Grn_e='' Ylw_e='' Cyn_e='' Nc_e=''
 if test -t 2; then
    if command_exists tput; then
       Red_e="$(tput setaf 1)" Grn_e="$(tput setaf 2)" Ylw_e="$(tput setaf 3)" Cyn_e="$(tput setaf 6)" Nc_e="$(tput sgr0)";:
    else
       Red_e='[31m' Grn_e='[32m' Ylw_e='[33m' Cyn_e='[36m' Nc_e='(B[m';:
+   fi
+fi
+
+# Check if in standalone mode, set $flake accordingly
+if "$standalone_mode"; then
+   flake='github:PowerUser64/universal-studio'
+else
+   if ! [ -f "$script_dir"/flake.nix ]; then
+      err "${Red_e}Error:${Nc_e} script is in standalone mode but flake.nix could not be found."
+      err "Please either disable standalone mode (set STANDALONE=false) or clone the repository for standalone mode to work."
+      exit 1
+   fi
+   flake="$script_dir"
+fi
+
+# See if a new version is available
+if "$standalone_mode" && "$check_updates"; then
+   latest_ver="$(curl -sSL "$update_url" | grep -Po 'program_ver=\K\d+\.\d+\.\d+$')"
+   if verlte "$program_ver" "$latest_ver"; then
+      msg "${Ylw_o}Info:${Nc_o} a new version is available! (current: v$program_ver latest: v$latest_ver)"
+      msg "See project homepage for updates: $homepage"
    fi
 fi
 
