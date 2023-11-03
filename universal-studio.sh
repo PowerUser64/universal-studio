@@ -43,6 +43,9 @@ nix_portable_location="$script_dir/nix-portable"
 
 application_list_name=Apps
 
+# All types of plugins supported by universal studio, listed as their names appear in /usr/lib, in no specific order
+plugin_types=(clap vst3 lv2 vst ladspa dssi lxvst)
+
 # Initialize FORCE_NIX_PORTABLE to false if it's unset
 FORCE_NIX_PORTABLE="${FORCE_NIX_PORTABLE:-false}"
 
@@ -118,76 +121,46 @@ collectBinds(){
   ### gather paths to bind for proot
   # we cannot bind / to / without running into a lot of trouble, therefore
   # we need to collect all top level directories and bind them inside an empty root
-  pathsTopLevel="$(find / -mindepth 1 -maxdepth 1 -not -name nix -not -name dev -not -name usr)"
-  pathsUsr="$(find /usr -mindepth 1 -maxdepth 1 -not -name lib)"
-  pathsLib="$(find /usr/lib -mindepth 1 -maxdepth 1 -not -name lv2 -not -name clap -not -name vst -not -name vst3 -not -name ladspa -not -name lxvst -not -name dssi)"
+  pluginPaths="$(find /usr/lib -mindepth 1 -maxdepth 1)"
 
-  toBind=""
-  for p in $pathsTopLevel $pathsUsr $pathsLib; do
-    if [ -e "$p" ]; then
-      real=$(realpath "$p")
-      if [ -e "$real" ]; then
-        if [[ "$real" == /nix/store/* ]]; then
-          storePath=$(storePathOfFile "$real")
-          toBind="$toBind $storePath $storePath"
-        else
-          toBind="$toBind $real $p"
-        fi
-      fi
-    fi
-  done
-
-  # TODO: add /var/run/dbus/system_bus_socket
-  paths="/etc/host.conf /etc/hosts /etc/hosts.equiv /etc/mtab /etc/netgroup /etc/networks /etc/passwd /etc/group /etc/nsswitch.conf /etc/resolv.conf /etc/localtime $HOME"
-
-  for p in $paths; do
-    if [ -e "$p" ]; then
-      real=$(realpath "$p")
-      if [ -e "$real" ]; then
-        if [[  "$real" == /nix/store/* ]]; then
-          storePath=$(storePathOfFile "$real")
-          toBind="$toBind $storePath $storePath"
-        else
-          toBind="$toBind $real $real"
-        fi
-      fi
-    fi
-  done
-}
-
-# bubblewrap helper function from nix-portable (source: https://github.com/DavHau/nix-portable/blob/master/default.nix#L290-L303)
-makeBindArgs(){
   arg="$1"; shift
-  sep="$1"; shift
-  binds=""
-  while :; do
-    if [ -n "${1:-}" ]; then
-      from="${1:-}"; shift
-      to="${1:-}"; shift || { echo "no bind destination provided for $from!"; exit 3; }
-      binds="$binds $arg $from$sep$to";
-    else
-      break
+
+  binds=("")
+  for p in $pluginPaths; do
+    # If path exists, is real, and is in the list of plugin types, make a temp dir for it and put the temp dir and the real path in the bind list
+    if [ -e "$p" ]; then
+      real=$(realpath "$p")
+      if [ -e "$real" ]; then
+        # shellcheck disable=SC2076
+        if [[ " ${real##*/} " =~ " $* " ]]; then
+          tmpdir="$emptytmpdir/${p##*/}"
+          mkdir "$tmpdir"
+          binds+=("$arg" "$tmpdir" "$p")
+        fi
+      fi
     fi
   done
 }
 
 # Runs a command, but wrapped with bubblewrap to disable access to certain directories
 run_wrapped() {
+   emptytmpdir="$(mktemp -d)"
+
    # NixOS doesn't require nixGL
    if test -s /bin/sh && [[ "$(realpath /bin/sh)" == /nix/store/* ]]; then
       eval "$*"
    else
-      collectBinds
-      makeBindArgs --bind " " $toBind
+      collectBinds --bind "${plugin_types[@]}"
       eval "$nix" run 'nixpkgs#bubblewrap' -- \
-         --bind "$(mktemp -d)" / \
+         --bind / / \
          --dev-bind /dev /dev \
-         '$binds' \
+         "\${binds[@]}" \
          \
          "$nix" run 'github:nix-community/nixGL#nixGLIntel' -- \
          \
          "$*"
    fi
+   rm -rf "$emptytmpdir"
 }
 
 # returns true if you are root
