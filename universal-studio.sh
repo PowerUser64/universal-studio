@@ -149,7 +149,7 @@ self_update() {
 # checks for updates
 check_update() {
    latest_ver="$(curl -sSL "$update_url" | grep -Po 'program_ver=\K\d+\.\d+\.\d+$')"
-   if verlte "$program_ver" "$latest_ver"; then
+   if verlt "$program_ver" "$latest_ver"; then
       msg "${Ylw_o}Info:${Nc_o} a new version is available!"
       msg "See project homepage for updates: $homepage"
    elif $1; then
