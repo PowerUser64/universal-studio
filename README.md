@@ -19,7 +19,7 @@ This project contains a script called `universal-studio` that can be used to
 launch any program it provides. To get `universal-studio`, execute this:
 
 ```bash
-curl -sSLO https://codeberg.org/PowerUser/universal-studio/releases/download/0.1.0/universal-studio
+curl -sSLO https://codeberg.org/PowerUser/universal-studio/releases/download/0.2.0/universal-studio
 chmod +x universal-studio
 ./universal-studio ardour
 ```
