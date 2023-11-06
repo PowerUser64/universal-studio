@@ -33,7 +33,7 @@
 set -eu
 
 program_name=universal-studio
-program_ver=0.1.0
+program_ver=0.2.0
 homepage=https://codeberg.org/PowerUser/universal-studio
 
 # Standalone mode: enables the script to work without the need for the repository (enabled in releases)
