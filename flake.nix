@@ -79,6 +79,7 @@
           sfizz
           fluidsynth
           x42-gmsynth
+          ninjas2
 
           # Specialized
           sorcer
