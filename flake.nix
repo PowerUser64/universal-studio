@@ -45,6 +45,7 @@
           # wolf-spectrum  # not in repos yet
           airwindows-lv2
           calf
+          cmt
           distrho
           gxplugins-lv2
           infamousPlugins
